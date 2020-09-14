@@ -9,7 +9,16 @@
         <ul>
           @foreach ($posts as $post)
             <li>
-              <h4>{{ $post->user->name }} - <b><a href="{{ route('admin.posts.show', $post) }}">{{ $post->title }}</a></b></h4>
+              <h4>
+                <form class="delete" action="{{ route('admin.posts.destroy', $post) }}" method="post">
+                  @csrf
+                  @method('DELETE')
+
+                  <input class="btn btn-danger btn-delete" type="submit" value="Elimina">
+                </form>
+                
+                {{ $post->user->name }} - <b><a href="{{ route('admin.posts.show', $post) }}">{{ $post->title }}</a></b>
+              </h4>
             </li>
           @endforeach
         </ul>
