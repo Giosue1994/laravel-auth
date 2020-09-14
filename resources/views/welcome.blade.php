@@ -68,6 +68,7 @@
             @if (Route::has('login'))
                 <div class="top-right links">
                     @auth
+                        <a href="{{ route('admin.posts.create') }}">Crea il tuo Post</a>
                         <a href="{{ route('admin.posts.index') }}">I tuoi Posts</a>
                         <a href="{{ url('/home') }}">Home</a>
                     @else
