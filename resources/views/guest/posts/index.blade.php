@@ -9,7 +9,7 @@
         <ul>
           @foreach ($posts as $post)
             <li>
-              <h4><b><a href="{{ route('admin.posts.show', $post) }}">{{ $post->title }}</a></b></h4>
+              <h4><b><a href="{{ route('posts.show', $post) }}">{{ $post->title }}</a></b></h4>
             </li>
           @endforeach
         </ul>
