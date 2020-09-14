@@ -15,7 +15,9 @@
         <br>
         <p>{{ $post->content }}</p>
         <br>
+        <a href="{{ route('admin.posts.index') }}">Torna indietro</a>
       </div>
+
     </div>
   </div>
 @endsection

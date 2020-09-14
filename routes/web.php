@@ -28,3 +28,5 @@ Route::prefix('admin')
       ->group(function() {
         Route::resource('posts', 'PostController');
       });
+
+Route::get('/posts', 'PostController@index')->name('posts');
