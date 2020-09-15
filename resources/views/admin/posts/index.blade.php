@@ -10,13 +10,14 @@
           @foreach ($posts as $post)
             <li>
               <h4>
+                <a class="btn btn-primary" href="{{ route('admin.posts.edit', $post) }}">Modifica</a>
                 <form class="delete" action="{{ route('admin.posts.destroy', $post) }}" method="post">
                   @csrf
                   @method('DELETE')
 
                   <input class="btn btn-danger btn-delete" type="submit" value="Elimina">
                 </form>
-                
+
                 {{ $post->user->name }} - <b><a href="{{ route('admin.posts.show', $post) }}">{{ $post->title }}</a></b>
               </h4>
             </li>
