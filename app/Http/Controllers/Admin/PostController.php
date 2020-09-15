@@ -4,8 +4,12 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
+// use aggiunti
 use Faker\Generator as Faker;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\SendNewMail;
+// models
 use App\Post;
 use App\User;
 
@@ -18,8 +22,8 @@ class PostController extends Controller
      */
     public function index()
     {
-        $user = Auth::user();
         $posts = Post::orderBy('created_at', 'desc')->get();
+        $user = Auth::user();
 
         return view('admin.posts.index', compact('posts', 'user'));
     }
@@ -52,9 +56,10 @@ class PostController extends Controller
         $new_post = new Post();
         $new_post->title = $data['title'];
         $new_post->user_id = Auth::id();
+        $new_post->content = $data['content'];
 
         if (isset($data['image'])) {
-          // upload e salvataggio file
+          // upload e salvataggio file immagine
           $path = $request->file('image')->store('images', 'public');
           $img_faker = $faker->imageUrl(320, 240);
           if (isset($path)) {
@@ -64,9 +69,9 @@ class PostController extends Controller
           }
         }
 
-        $new_post->content = $data['content'];
-
         $new_post->save();
+
+        Mail::to($new_post->user->email)->send(new SendNewMail);
 
         return redirect()->route('admin.posts.show', $new_post);
     }

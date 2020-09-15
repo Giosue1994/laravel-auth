@@ -14,9 +14,8 @@
             @if (File::exists('storage' . '/' . $post->image))
               <img src="{{ asset('storage') . '/' . $post->image }}" alt="immagine">
             @else
-              <img src="{{ $post->image }}" alt="immagine">          
+              <img src="{{ $post->image }}" alt="immagine">
             @endif
-
           </div>
         @endif
         <br>
