@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Faker\Generator as Faker;
 use App\Post;
 use App\User;
@@ -17,9 +18,10 @@ class PostController extends Controller
      */
     public function index()
     {
+        $user = Auth::user();
         $posts = Post::orderBy('created_at', 'desc')->get();
 
-        return view('admin.posts.index', compact('posts'));
+        return view('admin.posts.index', compact('posts', 'user'));
     }
 
     /**
@@ -38,16 +40,30 @@ class PostController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request, Post $post, Faker $faker)
+    public function store(Request $request, Faker $faker)
     {
-        $request->validate($this->validationData());
+        // if(!Auth::check()) {
+        //   abort('404');
+        // }
 
+        $request->validate($this->validationData());
         $data = $request->all();
 
         $new_post = new Post();
         $new_post->title = $data['title'];
-        $new_post->user_id = 1;
-        $new_post->image = $faker->imageUrl(320, 240);
+        $new_post->user_id = Auth::id();
+
+        if (isset($data['image'])) {
+          // upload e salvataggio file
+          $path = $request->file('image')->store('images', 'public');
+          $img_faker = $faker->imageUrl(320, 240);
+          if (isset($path)) {
+            $new_post->image = $path;
+          } else {
+            $new_post->image = $img_faker;
+          }
+        }
+
         $new_post->content = $data['content'];
 
         $new_post->save();
@@ -106,6 +122,7 @@ class PostController extends Controller
       return [
         'title' => 'required|max:255',
         'content' => 'required',
+        'image' => 'image'
       ];
     }
 }

@@ -5,7 +5,7 @@
     <div class="row">
       <div class="col">
         <h1>Crea il tuo Post</h1>
-        
+
         @if ($errors->any())
           <div class="alert alert-danger">
             <ul>
@@ -16,11 +16,14 @@
           </div>
         @endif
 
-        <form action="{{ route('admin.posts.store') }}" method="post">
+        <form action="{{ route('admin.posts.store') }}" method="post" enctype="multipart/form-data">
           @csrf
           @method('POST')
 
           <input type="text" name="title" value="{{ old('title') }}" placeholder="Inserisci titolo">
+          <br><br>
+          <label>Inserisci immagine</label>
+          <input type="file" name="image" accept="image/*">
           <br><br>
           <textarea name="content" rows="8" cols="80" placeholder="Inserisci contenuto">{{ old('content') }}</textarea>
           <br>

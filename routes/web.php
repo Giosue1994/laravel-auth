@@ -21,11 +21,11 @@ Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
 
-Route::prefix('admin')
-      ->namespace('Admin')
-      ->middleware('auth')
+Route::prefix('admin') // con cosa inizia l'url
+      ->namespace('Admin') // nome della cartella dove si trova il controller
+      ->middleware('auth') // questa funzione permette di accedere alle funzioni solo se loggato
       ->name('admin.')
-      ->group(function() {
+      ->group(function() { // gruppo di controller che può lavorare dentro Admin
         Route::resource('posts', 'PostController');
       });
 
